@@ -490,18 +490,18 @@ class Game {
 				string mapSize  = Console.ReadLine();
 				switch(mapSize.ToUpper()){
 				case "L":
-					columns = 30;
+					columns = 50;
 					rows = 30;
 					exit = true;
 				break;
 				case"M":
 					exit = true;
-					columns = 20;
+					columns = 35;
 					rows = 20;
 				break;
 				case"S":
 					exit = true;
-					columns = 10;
+					columns = 20;
 					rows = 10;
 				break;
 				
