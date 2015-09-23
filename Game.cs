@@ -29,8 +29,8 @@ using System.Text;
 class Game {
 	//TODO add more comments
 	//declare all the  variables
-	
-	static int bonusScore = 0;// implemented in later versions...
+
+	static int bonusScore = 0; // implemented in later versions...
 
 	static int speed = 150; // higher number, slower speed150
 	static Char space = ' '; // unneeded?
@@ -65,12 +65,14 @@ class Game {
 	//Hard Mode
 	static bool hardMode = false;
 
+	static bool startWithFood = true;
+
 	// the most important variable: the array of arrays that holds the positions of the items.
 	static Char[][] lines = new Char[rows][];
 
 
 	public static void Main() {
-		
+
 
 		// get me a start menu menu
 		Menu("main");
@@ -115,7 +117,7 @@ class Game {
 
 	// method to display
 	public static void Display() {
-		
+
 		if (dead) {
 			return;
 		}
@@ -124,29 +126,32 @@ class Game {
 
 		if (x == foodx && y == foody) { // Did I eat Food??
 			Console.Beep();
-			Random rnd = new Random();
-			while(true){
-			foody = rnd.Next(0, rows - 1);
-			foodx = rnd.Next(0, columns - 1);
-			if (x != foodx && y != foody){
-				break;
-			}
-			}
-			lines[foody][foodx] = 'O';
-				
-			
 
-			if(speed > 80){
-			if(hardMode){//increment speed when fed
-				speed-=2;
-			}
-			else{
-				speed -=1;
-			}
+
+
+
+			if (speed > 80) {
+				if (hardMode) { //increment speed when fed
+					speed -= 2;
+				} else {
+					speed -= 1;
+				}
 			}
 			length++;
-			
 
+
+		}
+		if (x == foodx && y == foody || startWithFood) {
+			Random rnd = new Random();
+			while (true) {
+				foody = rnd.Next(0, rows - 1);
+				foodx = rnd.Next(0, columns - 1);
+				if (x != foodx && y != foody) {
+					break;
+				}
+			}
+			lines[foody][foodx] = 'O';
+			startWithFood = false;
 		}
 
 		// this loop makes the lines[][] array blank
@@ -249,8 +254,8 @@ class Game {
 			Console.WriteLine(line); // the actual displaying is done here very boring.
 		}
 		Console.WriteLine(bottom);
-		
-	
+
+
 
 	}
 
@@ -264,7 +269,7 @@ class Game {
 
 		while (true) {
 
-			
+
 
 			// get the input and process it. 
 
@@ -419,15 +424,15 @@ class Game {
 	// menu method. Would it be overkill/useless if I used a class
 	// TODO add more comments in this method.
 	public static void Menu(string opt) {
-		Tuple<int, bool> highScoreTuple = getHigh();
-			bool allClear = highScoreTuple.Item2;
-			int highScore = highScoreTuple.Item1;
+		Tuple < int, bool > highScoreTuple = getHigh();
+		bool allClear = highScoreTuple.Item2;
+		int highScore = highScoreTuple.Item1;
 		int fullScore = length + bonusScore;
 		// Game Over Menu. This is extremely buggy.
 		if (opt == "dead") {
-			
+
 			Console.Beep();
-			
+
 			Console.ForegroundColor = ConsoleColor.Red;
 			dead = true; // tell the rest of the program to stop.
 
@@ -437,23 +442,21 @@ class Game {
 			Console.WriteLine("	║ ╦├─┤│││├┤   ║ ║└┐┌┘├┤ ├┬┘");
 			Console.WriteLine("	╚═╝┴ ┴┴ ┴└─┘  ╚═╝ └┘ └─┘┴└─");
 			Console.WriteLine("	         Score: " + fullScore);
-			
-			if(!allClear){
+
+			if (!allClear) {
 				Console.WriteLine("error, high score file not found");
-			}
-			else if(highScore < fullScore){
+			} else if (highScore < fullScore) {
 				setHigh(length + bonusScore);
 				Console.WriteLine("High Score: " + fullScore);
 				Console.WriteLine("Great Job! You beat your high score!");
-			}
-			else{
+			} else {
 				Console.WriteLine("High score: " + highScore);
 			}
 			Console.ReadLine();
 			Console.ResetColor();
 			Console.Clear();
-			
-			
+
+
 			//TODO add 'play again?' prompt
 			System.Environment.Exit(1); // GoooooodBYEEEEE
 		}
@@ -477,40 +480,39 @@ class Game {
 				Console.Clear();
 				Console.Write("Hard mode? (y/n)");
 				string mode = Console.ReadLine();
-				if(mode.ToUpper() == "Y"){
+				if (mode.ToUpper() == "Y") {
 					hardMode = true;
-				}
-				else{
+				} else {
 					hardMode = false;
 				}
 				Console.Clear();
 				bool exit = false;
-			do{
-				Console.WriteLine("Mapsize large, medium, or small?(L, M, or S)");
-				string mapSize  = Console.ReadLine();
-				switch(mapSize.ToUpper()){
-				case "L":
-					columns = 50;
-					rows = 30;
-					exit = true;
-				break;
-				case"M":
-					exit = true;
-					columns = 35;
-					rows = 20;
-				break;
-				case"S":
-					exit = true;
-					columns = 20;
-					rows = 10;
-				break;
-				
-				}
-				
-				
-			}while(!exit);
-			return;
-		}
+				do {
+					Console.WriteLine("Mapsize large, medium, or small?(L, M, or S)");
+					string mapSize = Console.ReadLine();
+					switch (mapSize.ToUpper()) {
+						case "L":
+							columns = 50;
+							rows = 30;
+							exit = true;
+							break;
+						case "M":
+							exit = true;
+							columns = 35;
+							rows = 20;
+							break;
+						case "S":
+							exit = true;
+							columns = 20;
+							rows = 10;
+							break;
+
+					}
+
+
+				} while (!exit);
+				return;
+			}
 			if (ChooseMain == ConsoleKey.DownArrow) {
 				Menu("main2");
 			} else {
@@ -556,11 +558,11 @@ class Game {
 			}
 
 		}
-	
 
-}
+
+	}
 	// get the high score form HighScore.txt. 
-	static public Tuple<int, bool> getHigh() {
+	static public Tuple < int, bool > getHigh() {
 		bool allClear = true;
 		string highScore;
 		try {
@@ -568,7 +570,7 @@ class Game {
 			StreamReader HighScoreRead = new StreamReader("HighScore");
 			highScore = HighScoreRead.ReadLine();
 			HighScoreRead.Close();
-			
+
 		} catch (FileNotFoundException) { //poop the program can't find it...
 			try {
 				StreamReader HighScoreRead = new StreamReader("HighScore.txt"); // Horray!!! Now it Works!!!
@@ -576,13 +578,13 @@ class Game {
 				HighScoreRead.Close();
 			} catch (FileNotFoundException) { // well, lets not crash.
 				allClear = false;
-				highScore = "0";	
+				highScore = "0";
 			}
 		}
 		int highScoreInt = int.Parse(highScore);
 
-		
-		Tuple<int, bool> returner = new Tuple<int, bool>(highScoreInt, allClear);
+
+		Tuple < int, bool > returner = new Tuple < int, bool > (highScoreInt, allClear);
 		return returner;
 
 
